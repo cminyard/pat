@@ -90,6 +90,7 @@ func printInteractiveUsage() {
 		MethodSerialTNC,
 		MethodVaraHF,
 		MethodVaraFM,
+		MethodGensioAX25,
 	}
 	fmt.Println("Methods:", strings.Join(methods, ", "))
 
@@ -143,6 +144,16 @@ func PrintHeard() {
 		fmt.Println("  (none)")
 	} else {
 		for call, t := range heard {
+			pf(call, t)
+		}
+	}
+
+	fmt.Println("gax25:")
+	gheard := ax25.GensioHeard()
+	if len(gheard) == 0 {
+		fmt.Println("  (none)")
+	} else {
+		for call, t := range gheard {
 			pf(call, t)
 		}
 	}

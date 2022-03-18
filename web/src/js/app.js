@@ -427,6 +427,7 @@ function initConnectModal() {
   });
   $('#bandwidthInput').change(onConnectBandwidthChange);
   $('#radioOnlyInput').change(onConnectInputChange);
+  $('#parmsInput').change(onConnectInputChange);
   $('#addrInput').change(onConnectInputChange);
   $('#targetInput').change(onConnectInputChange);
   $('#updateRmslistButton').click((e) => {
@@ -542,6 +543,12 @@ function setConnectValues(url) {
     $('#bandwidthInput').removeAttr('x-value');
   }
 
+  if (url.hasQuery('parms')) {
+    $('#parmsInput').val(query['parms']);
+  } else {
+    $('#parmsInput').val('');
+  }
+
   if (url.hasQuery('radio_only')) {
     $('#radioOnlyInput')[0].checked = query['radio_only'];
   } else {
@@ -576,6 +583,9 @@ function getConnectURL() {
   }
   if ($('#bandwidthInput').val()) {
     params += '&bw=' + $('#bandwidthInput').val();
+  }
+  if ($('#parmsInput').val()) {
+    params += '&parms=' + $('#parmsInput').val();
   }
   if ($('#radioOnlyInput').is(':checked')) {
     params += '&radio_only=true';
@@ -679,13 +689,19 @@ function refreshExtraInputGroups() {
       $('#addrInput').val('');
       $('#freqInputDiv').show();
       break;
+    case 'gax25':
+      $('#addrInputDiv').hide();
+      $('#addrInput').val('');
+      $('#freqInputDiv').show();
+      $('#parmsInputDiv').show();
+      break;
     default:
       $('#addrInputDiv').hide();
       $('#addrInput').val('');
       $('#freqInputDiv').show();
   }
 
-  if (transport == 'ax25' || transport == 'serial-tnc') {
+  if (transport == 'ax25' || transport == 'gax25' || transport == 'serial-tnc') {
     $('#radioOnlyInput')[0].checked = false;
     $('#radioOnlyInputDiv').hide();
   } else {

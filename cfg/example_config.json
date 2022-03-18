@@ -27,6 +27,14 @@
     "serial_baud": 9600,
     "type": "Kenwood"
   },
+  "gax25": {
+    "gensio": "kiss,tcp,localhost,8001",
+    "beacon": {
+      "every": 3600,
+      "message": "Winlink P2P",
+      "destination": "IDENT"
+    }
+  },
   "ardop": {
     "addr": "localhost:8515",
     "arq_bandwidth": {"Forced":false, "Max":500},
