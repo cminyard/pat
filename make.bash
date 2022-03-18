@@ -31,6 +31,8 @@ if [[ "$OS" == "linux"* ]]; then
 		export CGO_CFLAGS="-I$(pwd)/.build/${AX25DIST}"
 		export CGO_LDFLAGS="$(pwd)/${LIB}"
 	fi
+	export CGO_CXXFLAGS="${CGO_CXXFLAGS} -I/usr/local/include"
+	export CGO_LDFLAGS="${CGO_LDFLAGS} -L/usr/local/lib -lgensiocpp -lgensio"
 	if [[ -z "$CGO_LDFLAGS" ]]; then
 		echo "WARNING: No static libax25 library available."
 		echo "  Linking against shared library instead. To fix"
