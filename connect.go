@@ -110,6 +110,8 @@ func Connect(connectStr string) (success bool) {
 			if sbaud := config.SerialTNC.SerialBaud; sbaud > 0 {
 				url.Params.Set("serial_baud", fmt.Sprint(sbaud))
 			}
+		case MethodGensioAX25:
+			url.Host = config.GensioAX25.GensioStr
 		}
 	}
 
@@ -125,7 +127,7 @@ func Connect(connectStr string) (success bool) {
 		}
 
 		switch url.Scheme {
-		case MethodAX25, MethodSerialTNC:
+		case MethodAX25, MethodSerialTNC, MethodGensioAX25:
 			log.Printf("Radio-Only is not available for %s", url.Scheme)
 			return
 		default:

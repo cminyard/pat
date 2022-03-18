@@ -87,6 +87,7 @@ type Config struct {
 
 	AX25      AX25Config      `json:"ax25"`       // See AX25Config.
 	SerialTNC SerialTNCConfig `json:"serial-tnc"` // See SerialTNCConfig.
+	GensioAX25 GensioAX25Config `json:"gax25"`    // See GensioAX25Config.
 	Ardop     ArdopConfig     `json:"ardop"`      // See ArdopConfig.
 	Pactor    PactorConfig    `json:"pactor"`     // See PactorConfig.
 	Telnet    TelnetConfig    `json:"telnet"`     // See TelnetConfig.
@@ -220,6 +221,16 @@ type SerialTNCConfig struct {
 	Type string `json:"type"`
 }
 
+type GensioAX25Config struct {
+	GensioStr string `json:"gensio"`
+
+	// Optional beacon when listening for incoming packet-p2p connections.
+	Beacon BeaconConfig `json:"beacon"`
+
+	// (optional) Reference name to the Hamlib rig for frequency control.
+	Rig string `json:"rig"`
+}
+
 type AX25Config struct {
 	// axport to use (as defined in /etc/ax25/axports).
 	Port string `json:"port"`
@@ -282,6 +293,14 @@ var DefaultConfig = Config{
 		SerialBaud: 9600,
 		HBaud:      1200,
 		Type:       "Kenwood",
+	},
+	GensioAX25: GensioAX25Config{
+		GensioStr: "kiss,tcp,localhost,8001",
+		Beacon: BeaconConfig{
+			Every:       3600,
+			Message:     "Winlink P2P",
+			Destination: "IDENT",
+		},
 	},
 	Ardop: ArdopConfig{
 		Addr:         "localhost:8515",
