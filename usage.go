@@ -8,12 +8,13 @@ var (
 	UsageConnect = `'alias' or 'transport://[host][/digi]/targetcall[?params...]'
 
 transport:
-  winmor:     WINMOR TNC
-  ardop:      ARDOP TNC
-  ax25:       AX.25 (Linux only)
-  telnet:     TCP/IP
-  serial-tnc: Serial AX.25 TNC
-  pactor:     SCS PTC modems
+  winmor:      WINMOR TNC
+  ardop:       ARDOP TNC
+  ax25:        AX.25 (Linux only)
+  telnet:      TCP/IP
+  serial-tnc:  Serial AX.25 TNC
+  gax25:       Gensio AX.25 stack
+  pactor:      SCS PTC modems
 
 host:
   Used to address the host interface (TNC/modem), _not_ to be confused with the connection PATH.

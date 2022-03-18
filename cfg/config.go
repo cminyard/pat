@@ -85,12 +85,13 @@ type Config struct {
 	// Hamlib rigs available (with reference name) for ptt and frequency control.
 	HamlibRigs map[string]HamlibConfig `json:"hamlib_rigs"`
 
-	AX25      AX25Config      `json:"ax25"`       // See AX25Config.
-	SerialTNC SerialTNCConfig `json:"serial-tnc"` // See SerialTNCConfig.
-	Winmor    WinmorConfig    `json:"winmor"`     // See WinmorConfig.
-	Ardop     ArdopConfig     `json:"ardop"`      // See ArdopConfig.
-	Pactor    PactorConfig    `json:"pactor"`     // See PactorConfig.
-	Telnet    TelnetConfig    `json:"telnet"`     // See TelnetConfig.
+	AX25       AX25Config       `json:"ax25"`       // See AX25Config.
+	SerialTNC  SerialTNCConfig  `json:"serial-tnc"` // See SerialTNCConfig.
+	GensioAX25 GensioAX25Config `json:"gax25"`      // See GensioAX25Config.
+	Winmor     WinmorConfig     `json:"winmor"`     // See WinmorConfig.
+	Ardop      ArdopConfig      `json:"ardop"`      // See ArdopConfig.
+	Pactor     PactorConfig     `json:"pactor"`     // See PactorConfig.
+	Telnet     TelnetConfig     `json:"telnet"`     // See TelnetConfig.
 
 	// See GPSdConfig.
 	GPSd GPSdConfig `json:"gpsd"`
@@ -218,6 +219,10 @@ type SerialTNCConfig struct {
 	Type string `json:"type"`
 }
 
+type GensioAX25Config struct {
+	GensioStr string `json:"gensio"`
+}
+
 type AX25Config struct {
 	// axport to use (as defined in /etc/ax25/axports).
 	Port string `json:"port"`
@@ -276,6 +281,9 @@ var DefaultConfig = Config{
 		SerialBaud: 9600,
 		HBaud:      1200,
 		Type:       "Kenwood",
+	},
+	GensioAX25: GensioAX25Config{
+		GensioStr: "kiss,tcp,localhost,8001",
 	},
 	Winmor: WinmorConfig{
 		Addr:             "localhost:8500",

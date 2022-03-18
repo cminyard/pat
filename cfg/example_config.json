@@ -27,6 +27,9 @@
     "serial_baud": 9600,
     "type": "Kenwood"
   },
+  "gax25": {
+    "gensio": "kiss,tcp,localhost,8001"
+  },
   "winmor": {
     "addr": "la5nta.local.mesh:8500",
     "inbound_bandwidth": 500,

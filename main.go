@@ -35,12 +35,13 @@ import (
 )
 
 const (
-	MethodWinmor    = "winmor"
-	MethodArdop     = "ardop"
-	MethodTelnet    = "telnet"
-	MethodAX25      = "ax25"
-	MethodSerialTNC = "serial-tnc"
-	MethodPactor    = "pactor"
+	MethodWinmor     = "winmor"
+	MethodArdop      = "ardop"
+	MethodTelnet     = "telnet"
+	MethodAX25       = "ax25"
+	MethodSerialTNC  = "serial-tnc"
+	MethodGensioAX25 = "gax25"
+	MethodPactor     = "pactor"
 )
 
 var commands = []Command{

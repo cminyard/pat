@@ -90,6 +90,7 @@ func printInteractiveUsage() {
 		MethodAX25,
 		MethodTelnet,
 		MethodSerialTNC,
+		MethodGensioAX25,
 	}
 	fmt.Println("Methods:", strings.Join(methods, ", "))
 
