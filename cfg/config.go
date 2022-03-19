@@ -221,6 +221,12 @@ type SerialTNCConfig struct {
 
 type GensioAX25Config struct {
 	GensioStr string `json:"gensio"`
+
+	// Optional beacon when listening for incoming packet-p2p connections.
+	Beacon BeaconConfig `json:"beacon"`
+
+	// (optional) Reference name to the Hamlib rig for frequency control.
+	Rig string `json:"rig"`
 }
 
 type AX25Config struct {
@@ -284,6 +290,11 @@ var DefaultConfig = Config{
 	},
 	GensioAX25: GensioAX25Config{
 		GensioStr: "kiss,tcp,localhost,8001",
+		Beacon: BeaconConfig{
+			Every:       3600,
+			Message:     "Winlink P2P",
+			Destination: "IDENT",
+		},
 	},
 	Winmor: WinmorConfig{
 		Addr:             "localhost:8500",
