@@ -158,6 +158,16 @@ func PrintHeard() {
 			pf(call, t)
 		}
 	}
+
+	fmt.Println("gax25:")
+	gheard := ax25.GensioHeard()
+	if len(gheard) == 0 {
+		fmt.Println("  (none)")
+	} else {
+		for call, t := range gheard {
+			pf(call, t)
+		}
+	}
 }
 
 func PrintQTC() {
