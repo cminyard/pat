@@ -47,6 +47,7 @@ const (
 	MethodAX25          = "ax25"
 	MethodAX25AGWPE     = MethodAX25 + "+agwpe"
 	MethodAX25Linux     = MethodAX25 + "+linux"
+	MethodAX25Gensio    = MethodAX25 + "+gensio"
 	MethodAX25SerialTNC = MethodAX25 + "+serial-tnc"
 
 	// TODO: Remove after some release cycles (2023-05-21)
@@ -67,6 +68,7 @@ type Options struct {
 	LogPath      string
 	EventLogPath string
 	FormsPath    string
+	ScriptsPath  string
 }
 
 type App struct {
@@ -113,6 +115,7 @@ func New(opts Options) *App {
 	opts.ConfigPath = filepath.Clean(opts.ConfigPath)
 	opts.LogPath = filepath.Clean(opts.LogPath)
 	opts.EventLogPath = filepath.Clean(opts.EventLogPath)
+	opts.ScriptsPath = filepath.Clean(opts.ScriptsPath)
 
 	return &App{options: opts, websocketHub: noopWSSocket{}}
 }
@@ -171,6 +174,7 @@ func (a *App) Run(ctx context.Context, cmd Command, args []string) {
 	debug.Printf("Config file is\t'%s'", a.options.ConfigPath)
 	debug.Printf("Log file is \t'%s'", a.options.LogPath)
 	debug.Printf("Event log file is\t'%s'", a.options.EventLogPath)
+	debug.Printf("Scripts directory is\t'%s'", a.options.ScriptsPath)
 	directories.MigrateLegacyDataDir()
 
 	a.listenHub = NewListenerHub(a)
@@ -344,6 +348,14 @@ func (a *App) Heard() map[string][]Heard {
 				Time:     time,
 			})
 		}
+	}
+
+	gheard := ax25.GensioHeard()
+	for callsign, time := range gheard {
+		heard[MethodAX25Gensio] = append(heard[MethodAX25Gensio], Heard{
+			Callsign: callsign,
+			Time: time,
+		})
 	}
 
 	return heard

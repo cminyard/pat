@@ -39,6 +39,7 @@ class ConnectModal {
     });
     $('#bandwidthInput').change((e) => this.onConnectBandwidthChange(e));
     $('#radioOnlyInput').change(() => this.onConnectInputChange());
+    $('#parmsInput').change(() => this.onConnectInputChange.bind());
     $('#addrInput').change(() => this.onConnectInputChange());
     $('#targetInput').change(() => this.onConnectInputChange());
     $('#connectRequestsInput').change(() => this.onConnectInputChange());
@@ -137,6 +138,11 @@ class ConnectModal {
       url = url.setQuery("bw", $('#bandwidthInput').val());
     } else {
       url = url.removeQuery("bw");
+    }
+    if ($('#parmsInput').val()) {
+      url = url.setQuery("parms", $('#parmsInput').val());
+    } else {
+      url = url.removeQuery("parms");
     }
     if ($('#radioOnlyInput').is(':checked')) {
       url = url.setQuery("radio_only", "true");
@@ -442,16 +448,19 @@ class ConnectModal {
         $('#freqInputDiv').hide();
         $('#addrInputDiv').show();
         $('#connectRequestsInputDiv').hide();
+	$('#parmsInputDiv').hide();
         break;
       case 'ardop':
         $('#addrInputDiv').hide();
         $('#freqInputDiv').show();
         $('#connectRequestsInputDiv').show();
+	$('#parmsInputDiv').hide();
         break;
       default:
         $('#addrInputDiv').hide();
         $('#freqInputDiv').show();
         $('#connectRequestsInputDiv').hide();
+	$('#parmsInputDiv').show();
     }
 
     if (transport.startsWith('ax25')) {
@@ -548,6 +557,12 @@ class ConnectModal {
     } else {
       $('#bandwidthInput').val('').change();
       $('#bandwidthInput').removeAttr('x-value');
+    }
+
+    if (url.hasQuery('parms')) {
+      $('#parmsInput').val(query['parms']).change();
+    } else {
+      $('#parmsInput').val('').change();
     }
 
     if (url.hasQuery('radio_only')) {

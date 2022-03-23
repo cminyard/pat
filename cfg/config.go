@@ -100,6 +100,7 @@ type Config struct {
 	AX25Linux AX25LinuxConfig `json:"ax25_linux"` // See AX25LinuxConfig.
 	AGWPE     AGWPEConfig     `json:"agwpe"`      // See AGWPEConfig.
 	SerialTNC SerialTNCConfig `json:"serial-tnc"` // See SerialTNCConfig.
+	AX25Gensio AX25GensioConfig `json:"gensio"`    // See AX25GensioConfig.
 	Ardop     ArdopConfig     `json:"ardop"`      // See ArdopConfig.
 	Pactor    PactorConfig    `json:"pactor"`     // See PactorConfig.
 	Telnet    TelnetConfig    `json:"telnet"`     // See TelnetConfig.
@@ -333,6 +334,10 @@ type AGWPEConfig struct {
 	RadioPort int `json:"radio_port"`
 }
 
+type AX25GensioConfig struct {
+	GensioStr string `json:"gensio"`
+}
+
 type AX25Config struct {
 	// The AX.25 engine to be used.
 	//
@@ -340,6 +345,7 @@ type AX25Config struct {
 	//   - linux
 	//   - agwpe
 	//   - serial-tnc
+	//   - gensio
 	Engine AX25Engine `json:"engine"`
 
 	// (optional) Reference name to the Hamlib rig for frequency control.
@@ -422,6 +428,9 @@ var DefaultConfig = Config{
 	AGWPE: AGWPEConfig{
 		Addr:      "localhost:8000",
 		RadioPort: 0,
+	},
+	AX25Gensio: AX25GensioConfig{
+		GensioStr: "kiss,keepopen(discard-badwrites=yes),tcp,localhost,8001",
 	},
 	Ardop: ArdopConfig{
 		Addr:            "localhost:8515",
