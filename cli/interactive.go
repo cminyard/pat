@@ -114,6 +114,7 @@ func printInteractiveUsage() {
 	transports := []string{
 		app.MethodArdop,
 		app.MethodAX25, app.MethodAX25AGWPE, app.MethodAX25Linux, app.MethodAX25SerialTNC,
+		app.MethodAX25Gensio,
 		app.MethodPactor,
 		app.MethodTelnet,
 		app.MethodVaraHF,

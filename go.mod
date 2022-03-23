@@ -2,7 +2,10 @@ module github.com/la5nta/pat
 
 go 1.24.0
 
+
 tool golang.org/x/vuln/cmd/govulncheck
+
+replace github.com/la5nta/wl2k-go => ../wl2k-go
 
 require (
 	github.com/adrg/xdg v0.5.3
@@ -29,6 +32,7 @@ require (
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/albenik/go-serial/v2 v2.6.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/cminyard/go/gensio v0.5.0 // indirect
 	github.com/creack/goselect v0.1.3 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/howeyc/crc16 v0.0.0-20171223171357-2b2a61e366a6 // indirect

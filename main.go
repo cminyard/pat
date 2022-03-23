@@ -143,12 +143,14 @@ func optionsSet(opts *app.Options) *pflag.FlagSet {
 	defaultPrehooksPath := filepath.Join(directories.ConfigDir(), "prehooks")
 	defaultLogPath := filepath.Join(directories.StateDir(), strings.ToLower(buildinfo.AppName+".log"))
 	defaultEventLogPath := filepath.Join(directories.StateDir(), "eventlog.json")
+	defaultScriptsPath := filepath.Join(directories.DataDir(), "scripts")
 	set.StringVar(&opts.MailboxPath, "mbox", defaultMBox, "Path to mailbox directory.")
 	set.StringVar(&opts.FormsPath, "forms", defaultFormsPath, "Path to forms directory.")
 	set.StringVar(&opts.ConfigPath, "config", defaultConfigPath, "Path to config file.")
 	set.StringVar(&opts.PrehooksPath, "prehooks", defaultPrehooksPath, "Path to prehooks")
 	set.StringVar(&opts.LogPath, "log", defaultLogPath, "Path to log file. The file is truncated on each startup.")
 	set.StringVar(&opts.EventLogPath, "event-log", defaultEventLogPath, "Path to event log file.")
+	set.StringVar(&opts.ScriptsPath, "scripts", defaultScriptsPath, "Path to script file directory.")
 
 	return set
 }
