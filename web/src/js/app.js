@@ -447,6 +447,7 @@ function initConnectModal() {
   });
   $('#bandwidthInput').change(onConnectBandwidthChange);
   $('#radioOnlyInput').change(onConnectInputChange);
+  $('#parmsInput').change(onConnectInputChange);
   $('#addrInput').change(onConnectInputChange);
   $('#targetInput').change(onConnectInputChange);
   $('#connectURLInput').change((e) => {
@@ -476,6 +477,7 @@ function initConnectModal() {
       case 'ax25+linux':
       case 'ax25+agwpe':
       case 'ax25+serial-tnc':
+      case 'ax25+gensio':
         $('#modeSearchSelect').val('packet');
         break;
       default:
@@ -572,6 +574,12 @@ function setConnectValues(url) {
     $('#bandwidthInput').removeAttr('x-value');
   }
 
+  if (url.hasQuery('parms')) {
+    $('#parmsInput').val(query['parms']);
+  } else {
+    $('#parmsInput').val('');
+  }
+
   if (url.hasQuery('radio_only')) {
     $('#radioOnlyInput')[0].checked = query['radio_only'];
   } else {
@@ -619,6 +627,9 @@ function buildConnectURL() {
     url = url.setQuery("bw", $('#bandwidthInput').val());
   } else {
     url = url.removeQuery("bw");
+  }
+  if ($('#parmsInput').val()) {
+    params += '&parms=' + $('#parmsInput').val();
   }
   if ($('#radioOnlyInput').is(':checked')) {
     url = url.setQuery("radio_only", "true");
@@ -712,17 +723,20 @@ function refreshExtraInputGroups() {
       $('#freqInputDiv').hide();
       $('#freqInput').val('');
       $('#addrInputDiv').show();
+      $('#parmsInputDiv').hide();
       break;
     case 'ardop':
     case 'varahf':
       $('#addrInputDiv').hide();
       $('#addrInput').val('');
       $('#freqInputDiv').show();
+      $('#parmsInputDiv').hide();
       break;
     default:
       $('#addrInputDiv').hide();
       $('#addrInput').val('');
       $('#freqInputDiv').show();
+      $('#parmsInputDiv').show();
   }
 
   if (transport.startsWith('ax25')) {
