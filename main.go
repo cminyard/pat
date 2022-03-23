@@ -43,6 +43,7 @@ const (
 
 	MethodAX25          = "ax25"
 	MethodAX25AGWPE     = MethodAX25 + "+agwpe"
+	MethodAX25Gensio    = MethodAX25 + "+gensio"
 	MethodAX25Linux     = MethodAX25 + "+linux"
 	MethodAX25SerialTNC = MethodAX25 + "+serial-tnc"
 
