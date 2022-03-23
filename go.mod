@@ -2,6 +2,8 @@ module github.com/la5nta/pat
 
 go 1.16
 
+replace github.com/la5nta/wl2k-go => ../wl2k-go
+
 require (
 	github.com/adrg/xdg v0.3.3
 	github.com/bndr/gotabulate v1.1.3-0.20170315142410-bc555436bfd5
