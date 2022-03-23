@@ -66,6 +66,7 @@ class RmslistView {
       case 'ax25+linux':
       case 'ax25+agwpe':
       case 'ax25+serial-tnc':
+      case 'ax25+gensio':
         $('#modeSearchSelect').val('packet');
         break;
       default:

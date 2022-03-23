@@ -33,6 +33,7 @@ transport:
   ax25+agwpe:      AX.25 (AGWPE/Direwolf)
   ax25+linux:      AX.25 (Linux kernel)
   ax25+serial-tnc: AX.25 (Serial TNC)
+  ax25+gensio:     AX.25 (gensio library)
 
 host:
   Used to address the host interface (TNC/modem), _not_ to be confused with the connection PATH.
@@ -61,6 +62,8 @@ params:
   connect ax25:///LA1B-10              Connect to the RMS Gateway LA1B-10 using AX.25 engine as per configuration.
   connect ax25+linux://tmd710/LA1B-10  Connect to LA1B-10 using Linux kernel's AX.25 stack on axport 'tmd710'.
   connect ax25:///LA1B/LA5NTA          Peer-to-peer connection with LA5NTA via LA1B digipeater.
+  connect ax25+gensio:///LA1B              Connect to the RMS Gateway LA1B-10 using Linux AX.25 on the default gensiostr.
+  connect ax25+gensio:///LA1B?host=kiss,serialdev,/dev/ttyS0,9600n81   Connect to the RMS Gateway LA1B-10 using Linux AX.25 on the kiss modem on ttyS0
   connect ardop:///LA3F                Connect to the RMS HF Gateway LA3F using ARDOP on the default tcp address and port.
   connect ardop:///LA3F?freq=5350      Same as above, but set dial frequency of the radio using rigcontrol.  
   connect pactor:///LA3F               Connect to RMS HF Gateway LA3F using PACTOR.
