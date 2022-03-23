@@ -23,20 +23,20 @@ function install_libax25 {
 
 [[ "$1" == "libax25" ]] && install_libax25 && exit 0;
 
+LIBAX25_CFLAGS=
+LIBAX25_LDFLAGS=
 # Link against libax25 (statically) on Linux
 if [[ "$OS" == "linux"* ]]; then
 	TAGS="libax25 $TAGS"
 	LIB=".build/${AX25DIST}/.libs/libax25.a"
-	if [[ -z "$CGO_LDFLAGS" ]] && [[ -f "$LIB" ]]; then
-		export CGO_CFLAGS="-I$(pwd)/.build/${AX25DIST}"
-		export CGO_LDFLAGS="$(pwd)/${LIB}"
+	if [[ -z "$LIBAX25_LDFLAGS" ]] && [[ -f "$LIB" ]]; then
+		export LIBAX25_CFLAGS="-I$(pwd)/.build/${AX25DIST}"
+		export LIBAX25_LDFLAGS="$(pwd)/${LIB}"
 	fi
-	export CGO_CXXFLAGS="${CGO_CXXFLAGS} -I/usr/local/include"
-	export CGO_LDFLAGS="${CGO_LDFLAGS} -L/usr/local/lib -lgensiocpp -lgensio"
-	if [[ -z "$CGO_LDFLAGS" ]]; then
+	if [[ -z "$LIBAX25_LDFLAGS" ]]; then
 		echo "WARNING: No static libax25 library available."
 		echo "  Linking against shared library instead. To fix"
-		echo "  this issue, set CGO_LDFLAGS to the full path of"
+		echo "  this issue, set LIBAX25_LDFLAGS to the full path of"
 		echo "  libax25.a, or run 'make.bash libax25' to download"
 		echo "  and compile ${AX25DIST} in .build/"
 		sleep 3;
@@ -44,6 +44,46 @@ if [[ "$OS" == "linux"* ]]; then
 		TAGS="static $TAGS"
 	fi
 fi
+
+GENSIOVERSION="2.4.0-rc3"
+GENSIODIST="gensio-${GENSIOVERSION}"
+GENSIODIST_URL="https://sourceforge.net/projects/ser2net/files/ser2net/${GENSIODIST}.tar.gz"
+function install_gensio {
+	mkdir -p .build && cd .build
+	[[ -f "${GENSIODIST}" ]] || curl -LSsf "${GENSIODIST_URL}" | tar zx
+	cd "${GENSIODIST}/" && ./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-openipmi=no && make && cd ../../
+}
+
+[[ "$1" == "gensio" ]] && install_gensio && exit 0;
+
+GENSIO_CFLAGS=
+GENSIO_LDFLAGS=
+# Link against gensio (statically) on Linux
+if [[ "$OS" == "linux"* ]]; then
+	LIB1=".build/${GENSIODIST}/c++/lib/.libs/libgensiocpp.a"
+	LIB2=".build/${GENSIODIST}/lib/.libs/libgensio.a"
+	if [[ -z "$GENSIO_LDFLAGS" ]] && [[ -f "$LIB1" ]] && [[ -f "$LIB2" ]]; then
+		export GENSIO_CFLAGS="-I$(pwd)/.build/${GENSIODIST}/include -I$(pwd)/.build/${GENSIODIST}/c++/include"
+		export GENSIO_LDFLAGS="$(pwd)/${LIB1} $(pwd)/${LIB2}"
+	fi
+	if [[ -z "$GENSIO_LDFLAGS" ]]; then
+		echo "WARNING: No static gensio library available."
+		echo "  Linking against shared library instead. To fix"
+		echo "  this issue, set GENSIO_LDFLAGS to the full path of"
+		echo "  libgensio.a and libgensiocpp.a, or run"
+		echo "  'make.bash gensio' to download and compile"
+		echo "  ${GENSIODIST} in .build/"
+		sleep 3;
+	fi
+fi
+
+export CGO_CFLAGS="${LIBAX25_CFLAGS}"
+export CGO_CXXFLAGS="${GENSIO_CFLAGS}"
+export CGO_LDFLAGS="${LIBAX25_LDFLAGS} ${GENSIO_LDFLAGS}"
+
+echo ${CGO_CFLAGS}
+echo ${CGO_CXXFLAGS}
+echo ${CGO_LDFLAGS}
 
 echo -e "Downloading Go dependencies..."
 go mod download
