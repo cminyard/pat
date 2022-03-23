@@ -32,6 +32,7 @@ class ConnectModal {
     });
     $('#bandwidthInput').change(this.onConnectBandwidthChange.bind(this));
     $('#radioOnlyInput').change(this.onConnectInputChange.bind(this));
+    $('#parmsInput').change(this.onConnectInputChange.bind(this));
     $('#addrInput').change(this.onConnectInputChange.bind(this));
     $('#targetInput').change(this.onConnectInputChange.bind(this));
     $('#connectRequestsInput').change(this.onConnectInputChange.bind(this));
@@ -71,6 +72,7 @@ class ConnectModal {
         case 'ax25+linux':
         case 'ax25+agwpe':
         case 'ax25+serial-tnc':
+        case 'ax25+gensio':
           $('#modeSearchSelect').val('packet');
           break;
         default:
@@ -136,6 +138,9 @@ class ConnectModal {
     } else {
       url = url.removeQuery("bw");
     }
+    if ($('#parmsInput').val()) {
+       params += '&parms=' + $('#parmsInput').val();
+     }
     if ($('#radioOnlyInput').is(':checked')) {
       url = url.setQuery("radio_only", "true");
     } else {
@@ -238,16 +243,19 @@ class ConnectModal {
         $('#freqInputDiv').hide();
         $('#addrInputDiv').show();
         $('#connectRequestsInputDiv').hide();
+	$('#parmsInputDiv').hide();
         break;
       case 'ardop':
         $('#addrInputDiv').hide();
         $('#freqInputDiv').show();
         $('#connectRequestsInputDiv').show();
+	$('#parmsInputDiv').hide();
         break;
       default:
         $('#addrInputDiv').hide();
         $('#freqInputDiv').show();
         $('#connectRequestsInputDiv').hide();
+	$('#parmsInputDiv').show();
     }
 
     if (transport.startsWith('ax25')) {
@@ -366,6 +374,12 @@ class ConnectModal {
     } else {
       $('#bandwidthInput').val('').change();
       $('#bandwidthInput').removeAttr('x-value');
+    }
+
+    if (url.hasQuery('parms')) {
+      $('#parmsInput').val(query['parms']);
+    } else {
+      $('#parmsInput').val('');
     }
 
     if (url.hasQuery('radio_only')) {
