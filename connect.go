@@ -136,7 +136,13 @@ func Connect(connectStr string) (success bool) {
 			if sbaud := config.SerialTNC.SerialBaud; sbaud > 0 {
 				url.Params.Set("serial_baud", fmt.Sprint(sbaud))
 			}
+		case MethodAX25Gensio:
+			url.Host = config.AX25Gensio.GensioStr
 		}
+	}
+
+	if url.Scripts == "" {
+		url.Scripts = fOptions.ScriptsPath
 	}
 
 	// Radio Only?
@@ -437,6 +443,8 @@ func defaultAX25Method() string {
 		return MethodAX25SerialTNC
 	case cfg.AX25EngineLinux:
 		return MethodAX25Linux
+	case cfg.AX25EngineGensio:
+		return MethodAX25Gensio
 	default:
 		panic(fmt.Sprintf("invalid ax25 engine: %s", config.AX25.Engine))
 	}

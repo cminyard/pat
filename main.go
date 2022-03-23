@@ -43,6 +43,7 @@ const (
 
 	MethodAX25          = "ax25"
 	MethodAX25AGWPE     = MethodAX25 + "+agwpe"
+	MethodAX25Gensio    = MethodAX25 + "+gensio"
 	MethodAX25Linux     = MethodAX25 + "+linux"
 	MethodAX25SerialTNC = MethodAX25 + "+serial-tnc"
 
@@ -211,6 +212,7 @@ var fOptions struct {
 	LogPath      string
 	EventLogPath string
 	FormsPath    string
+	ScriptsPath  string
 }
 
 func optionsSet() *pflag.FlagSet {
@@ -227,11 +229,13 @@ func optionsSet() *pflag.FlagSet {
 	defaultConfigPath := filepath.Join(directories.ConfigDir(), "config.json")
 	defaultLogPath := filepath.Join(directories.StateDir(), strings.ToLower(buildinfo.AppName+".log"))
 	defaultEventLogPath := filepath.Join(directories.StateDir(), "eventlog.json")
+	defaultScriptsPath := filepath.Join(directories.DataDir(), "scripts")
 	set.StringVar(&fOptions.MailboxPath, "mbox", defaultMBox, "Path to mailbox directory.")
 	set.StringVar(&fOptions.FormsPath, "forms", defaultFormsPath, "Path to forms directory.")
 	set.StringVar(&fOptions.ConfigPath, "config", defaultConfigPath, "Path to config file.")
 	set.StringVar(&fOptions.LogPath, "log", defaultLogPath, "Path to log file. The file is truncated on each startup.")
 	set.StringVar(&fOptions.EventLogPath, "event-log", defaultEventLogPath, "Path to event log file.")
+	set.StringVar(&fOptions.ScriptsPath, "scripts", defaultScriptsPath, "Path to script file directory.")
 
 	return set
 }
@@ -266,11 +270,13 @@ func main() {
 	fOptions.ConfigPath = filepath.Clean(fOptions.ConfigPath)
 	fOptions.LogPath = filepath.Clean(fOptions.LogPath)
 	fOptions.EventLogPath = filepath.Clean(fOptions.EventLogPath)
+	fOptions.ScriptsPath = filepath.Clean(fOptions.ScriptsPath)
 	debug.Printf("Mailbox dir is\t'%s'", fOptions.MailboxPath)
 	debug.Printf("Forms dir is\t'%s'", fOptions.FormsPath)
 	debug.Printf("Config file is\t'%s'", fOptions.ConfigPath)
 	debug.Printf("Log file is \t'%s'", fOptions.LogPath)
 	debug.Printf("Event log file is\t'%s'", fOptions.EventLogPath)
+	debug.Printf("Scripts directory is\t'%s'", fOptions.ScriptsPath)
 	directories.MigrateLegacyDataDir()
 
 	// Graceful shutdown by cancelling background context on interrupt.

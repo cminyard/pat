@@ -42,6 +42,8 @@ func Listen(listenStr string) {
 			listenHub.Enable(TelnetListener{})
 		case MethodAX25AGWPE:
 			listenHub.Enable(&AX25AGWPEListener{})
+		case MethodAX25Gensio:
+			listenHub.Enable(&AX25GensioListener{})
 		case MethodAX25Linux:
 			listenHub.Enable(&AX25LinuxListener{})
 		case MethodVaraFM:
@@ -90,6 +92,57 @@ func (l *AX25LinuxListener) BeaconStop() {
 
 func (l *AX25LinuxListener) CurrentFreq() (Frequency, bool) { return 0, false }
 func (l *AX25LinuxListener) Name() string                   { return MethodAX25Linux }
+
+type AX25GensioListener struct{ stopBeacon chan<- struct{} }
+
+func (l *AX25GensioListener) Init() (net.Listener, error) {
+	return ax25.ListenGensioAX25(config.AX25Gensio.GensioStr, fOptions.MyCall)
+}
+
+func (l *AX25GensioListener) BeaconStart() error {
+	if config.AX25.Beacon.Every > 0 {
+		l.stopBeacon = l.beaconLoop(time.Duration(config.AX25.Beacon.Every) * time.Second)
+	}
+	return nil
+}
+
+func (l *AX25GensioListener) BeaconStop() {
+	select {
+	case l.stopBeacon <- struct{}{}:
+	default:
+	}
+}
+
+func (l *AX25GensioListener) beaconLoop(dur time.Duration) chan<- struct{} {
+	stop := make(chan struct{}, 1)
+	go func() {
+		b, err := ax25.NewGensioAX25Beacon(config.AX25Gensio.GensioStr,
+			fOptions.MyCall,
+			config.AX25.Beacon.Destination,
+			config.AX25.Beacon.Message)
+		if err != nil {
+			log.Printf("Unable to activate beacon: %s", err)
+			return
+		}
+
+		t := time.Tick(dur)
+		for {
+			select {
+			case <-t:
+				if err := b.Now(); err != nil {
+					log.Printf("%s beacon failed: %s", l.Name(), err)
+					return
+				}
+			case <-stop:
+				return
+			}
+		}
+	}()
+	return stop
+}
+
+func (l *AX25GensioListener) CurrentFreq() (Frequency, bool) { return 0, false }
+func (l *AX25GensioListener) Name() string { return MethodAX25Gensio }
 
 type ARDOPListener struct{}
 

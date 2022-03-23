@@ -9,6 +9,7 @@ const (
 	AX25EngineAGWPE     AX25Engine = "agwpe"
 	AX25EngineLinux                = "linux"
 	AX25EngineSerialTNC            = "serial-tnc"
+	AX25EngineGensio               = "gensio"
 )
 
 type AX25Engine string
@@ -19,7 +20,7 @@ func (a *AX25Engine) UnmarshalJSON(p []byte) error {
 		return err
 	}
 	switch v := AX25Engine(str); v {
-	case AX25EngineLinux, AX25EngineAGWPE, AX25EngineSerialTNC:
+	case AX25EngineLinux, AX25EngineAGWPE, AX25EngineSerialTNC, AX25EngineGensio:
 		*a = v
 		return nil
 	default:

@@ -86,6 +86,7 @@ func printInteractiveUsage() {
 	transports := []string{
 		MethodArdop,
 		MethodAX25, MethodAX25AGWPE, MethodAX25Linux, MethodAX25SerialTNC,
+		MethodAX25Gensio,
 		MethodPactor,
 		MethodTelnet,
 		MethodVaraHF,
@@ -143,6 +144,16 @@ func PrintHeard() {
 		fmt.Println("  (none)")
 	} else {
 		for call, t := range heard {
+			pf(call, t)
+		}
+	}
+
+	fmt.Println("ax25+gensio:")
+	gheard := ax25.GensioHeard()
+	if len(gheard) == 0 {
+		fmt.Println("  (none)")
+	} else {
+		for call, t := range gheard {
 			pf(call, t)
 		}
 	}
