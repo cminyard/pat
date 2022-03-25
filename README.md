@@ -120,10 +120,12 @@ already have a configuration installed.  The default one is:
 ```
 
 The "gensio" string tells Pat how to connect to the TNC.  If you are
-running direwolf on the local system, the default is correct.  If you
-need to specify kiss parameters, you would add (parm=a,parm=b) after
-kiss in the gensio string, like "kiss(txdelay=100),tcp,...".  See the
-gensio.5 man page for details on this.
+running direwolf on the local system, the default is correct.
+Otherwise replace "localhost" with the proper host and the "8001" with
+the port number you need.  If you need to specify kiss parameters, you
+would add (parm=a,parm=b) after kiss in the gensio string, like
+"kiss(txdelay=100),tcp,...".  See the gensio.5 man page for details on
+this.
 
 If you have a serial TNC, you would use something like the following
 for the gensio string:
@@ -144,7 +146,8 @@ enables crc checking in the ax25 layer.  By default this is disabled
 as direwolf does it for you, but it might be required for a serial
 TNC.
 
-To see the man page telling about gensio strings, do:
+To see the man page telling about gensio strings, do the following
+from the pat directory after building:
 
 ```
 nroff -man .build/gensio-2.4.0-rc4/man/gensio.5 | less -r
@@ -157,6 +160,17 @@ configure" you are ready to go.  For instance, I use:
 ```
 pat connect gax25:///n5cor-10
 ```
+
+The gensio library is pretty flexible, you can use UDP as well.
+That's too big a discussion for here, see the gensio man page and
+gensio README for details.
+
+Note that I have compiled and tried this under Windows using mingw64
+(you still have to compile swig and such, you have to compile gensio
+yourself, and you have to build with go in a native Windows
+environment).  It works, but it's fairly complicated.  If you know
+what you are doing it's not too hard.  If you don't know what you are
+doing the learning curve is pretty steep.
 
 ## Copyright/License
 
