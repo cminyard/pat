@@ -47,11 +47,23 @@ fi
 
 GENSIOVERSION="2.4.0-rc4"
 GENSIODIST="gensio-${GENSIOVERSION}"
-GENSIODIST_URL="https://sourceforge.net/projects/ser2net/files/ser2net/${GENSIODIST}.tar.gz"
+GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
+GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
+GENSIODIST_PATCHES="patches/0001-selector-Fix-a-timer-issue.patch"
 function install_gensio {
 	mkdir -p .build && cd .build
-	[[ -f "${GENSIODIST}" ]] || curl -LSsf "${GENSIODIST_URL}" | tar zx
-	cd "${GENSIODIST}/" && ./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-openipmi=no && make && cd ../../
+	if [ ! -f "${GENSIODIST}" ]; then
+		echo "Downloading ${GENSIODIST_URL}"
+		curl -LSsf "${GENSIODIST_URL}" | tar zx
+		cd "${GENSIODIST}"
+		for i in ${GENSIODIST_PATCHES}; do
+		    echo "Applying patch $i"
+		    curl -LSsf "${GENSIODIST_BASEURL}/$i" | patch -p1
+		done
+	else
+		cd "${GENSIODIST}"
+	fi
+	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-openipmi=no && make && cd ../../
 }
 
 [[ "$1" == "gensio" ]] && install_gensio && exit 0;
