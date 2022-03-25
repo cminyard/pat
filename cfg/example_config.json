@@ -28,7 +28,12 @@
     "type": "Kenwood"
   },
   "gax25": {
-    "gensio": "kiss,tcp,localhost,8001"
+    "gensio": "kiss,tcp,localhost,8001",
+    "beacon": {
+      "every": 3600,
+      "message": "Winlink P2P",
+      "destination": "IDENT"
+    }
   },
   "winmor": {
     "addr": "la5nta.local.mesh:8500",
