@@ -416,6 +416,7 @@ function initConnectModal() {
     onConnectFreqChange();
   });
   $('#radioOnlyInput').change(onConnectInputChange);
+  $('#parmsInput').change(onConnectInputChange);
   $('#addrInput').change(onConnectInputChange);
   $('#targetInput').change(onConnectInputChange);
   $('#updateRmslistButton').click((e) => {
@@ -522,6 +523,12 @@ function setConnectValues(url) {
     $('#freqInput').val('');
   }
 
+  if (url.hasQuery('parms')) {
+    $('#parmsInput').val(query['parms']);
+  } else {
+    $('#parmsInput').val('');
+  }
+
   if (url.hasQuery('radio_only')) {
     $('#radioOnlyInput')[0].checked = query['radio_only'];
   } else {
@@ -553,6 +560,9 @@ function getConnectURL() {
 
   if ($('#freqInput').val() && $('#freqInput').parent().hasClass('has-success')) {
     params += '&freq=' + $('#freqInput').val();
+  }
+  if ($('#parmsInput').val()) {
+    params += '&parms=' + $('#parmsInput').val();
   }
   if ($('#radioOnlyInput').is(':checked')) {
     params += '&radio_only=true';
@@ -635,15 +645,24 @@ function refreshExtraInputGroups() {
   const transport = $('#transportSelect').val();
   if (transport == 'telnet') {
     $('#freqInputDiv').hide();
+    $('#parmsInputDiv').hide();
     $('#freqInput').val('');
+    $('#parmsInput').val('');
     $('#addrInputDiv').show();
-  } else {
+  } else if (transport == 'gax25') {
     $('#addrInputDiv').hide();
     $('#addrInput').val('');
     $('#freqInputDiv').show();
+    $('#parmsInputDiv').show();
+  } else {
+    $('#addrInputDiv').hide();
+    $('#parmsInputDiv').hide();
+    $('#addrInput').val('');
+    $('#parmsInput').val('');
+    $('#freqInputDiv').show();
   }
 
-  if (transport == 'ax25' || transport == 'serial-tnc') {
+  if (transport == 'ax25' || transport == 'gax25' || transport == 'serial-tnc') {
     $('#radioOnlyInput')[0].checked = false;
     $('#radioOnlyInputDiv').hide();
   } else {
