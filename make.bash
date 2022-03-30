@@ -49,7 +49,7 @@ GENSIOVERSION="2.4.0-rc5"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
-GENSIODIST_PATCHES=""
+GENSIODIST_PATCHES="patches/0001-ax25-Clear-the-retry-count-when-a-response-is-heard.patch"
 function install_gensio {
 	mkdir -p .build && cd .build
 	if [ ! -f "${GENSIODIST}" ]; then
