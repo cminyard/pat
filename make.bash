@@ -45,14 +45,11 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.4.0-rc5"
+GENSIOVERSION="2.4.0-rc6"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
-GENSIODIST_PATCHES="\
-	patches/0001-ax25-Clear-the-retry-count-when-a-response-is-heard.patch
-	patches/0001-ax25-Fix-some-ack-handling.patch \
-"
+GENSIODIST_PATCHES=""
 function install_gensio {
 	mkdir -p .build && cd .build
 	if [ ! -f "${GENSIODIST}" ]; then
@@ -71,25 +68,32 @@ function install_gensio {
 
 [[ "$1" == "gensio" ]] && install_gensio && exit 0;
 
-# Link against gensio (statically) on Linux
+
+if [[ "$OS" == "windows"* ]]; then
+	bdir=`pwd -W`
+       	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
+else
+	bdir=`pwd`
+       	EXTRALIBS=""
+fi
+
+# Link against gensio (statically) on all platforms
 #GENSIO_CXXFLAGS="-I/usr/local/include"
 #GENSIO_LDFLAGS="-L/usr/local/lib -lgensiocpp -lgensio"
-if [[ "$OS" == "linux"* ]]; then
-	LIB1=".build/${GENSIODIST}/c++/lib/.libs/libgensiocpp.a"
-	LIB2=".build/${GENSIODIST}/lib/.libs/libgensio.a"
-	if [[ -z "$GENSIO_LDFLAGS" ]] && [[ -f "$LIB1" ]] && [[ -f "$LIB2" ]]; then
-		export GENSIO_CXXFLAGS="-I$(pwd)/.build/${GENSIODIST}/include -I$(pwd)/.build/${GENSIODIST}/c++/include"
-		export GENSIO_LDFLAGS="$(pwd)/${LIB1} $(pwd)/${LIB2}"
-	fi
-	if [[ -z "$GENSIO_LDFLAGS" ]]; then
-		echo "WARNING: No static gensio library available."
-		echo "  Linking against shared library instead. To fix"
-		echo "  this issue, set GENSIO_LDFLAGS to the full path of"
-		echo "  libgensio.a and libgensiocpp.a, or run"
-		echo "  'make.bash gensio' to download and compile"
-		echo "  ${GENSIODIST} in .build/"
-		sleep 3;
-	fi
+LIB1=".build/${GENSIODIST}/c++/lib/.libs/libgensiocpp.a"
+LIB2=".build/${GENSIODIST}/lib/.libs/libgensio.a"
+if [[ -z "$GENSIO_LDFLAGS" ]] && [[ -f "$LIB1" ]] && [[ -f "$LIB2" ]]; then
+	export GENSIO_CXXFLAGS="-I${bdir}/.build/${GENSIODIST}/include -I${bdir}/.build/${GENSIODIST}/c++/include -DGENSIO_LINK_STATIC"
+	export GENSIO_LDFLAGS="${bdir}/${LIB1} ${bdir}/${LIB2} ${EXTRALIBS}"
+fi
+if [[ -z "$GENSIO_LDFLAGS" ]]; then
+	echo "WARNING: No static gensio library available."
+	echo "  Linking against shared library instead. To fix"
+	echo "  this issue, set GENSIO_LDFLAGS to the full path of"
+	echo "  libgensio.a and libgensiocpp.a, or run"
+	echo "  'make.bash gensio' to download and compile"
+	echo "  ${GENSIODIST} in .build/"
+	sleep 3;
 fi
 
 export CGO_CFLAGS="${LIBAX25_CFLAGS}"
