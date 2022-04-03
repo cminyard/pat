@@ -172,6 +172,12 @@ environment).  It works, but it's fairly complicated.  If you know
 what you are doing it's not too hard.  If you don't know what you are
 doing the learning curve is pretty steep.
 
+So to compile under Windows, you basically follow the steps above in
+the mingw64 environment, except you don't do the "./make.bash libax25"
+step since that's for Linux only.  You will end up with a binary that
+has some DLL dependencies to mingw64 stuff, but that is unavoidable,
+as far as I can tell.
+
 ## Copyright/License
 
 Copyright (c) 2020 Martin Hebnes Pedersen LA5NTA
