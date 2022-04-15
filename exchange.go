@@ -197,6 +197,9 @@ func abortActiveConnection(dirty bool) (ok bool) {
 			}
 		}()
 		return true
+	case opening != nil:
+		opening.Close()
+		return true
 	case dialing != nil:
 		log.Printf("Transport %s's dialer can not be aborted at this stage", dialing.Scheme)
 		return true

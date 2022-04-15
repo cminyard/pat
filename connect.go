@@ -26,6 +26,7 @@ var (
 	wmTNC   *winmor.TNC    // Pointer to the WINMOR TNC used by Listen and Connect
 	adTNC   *ardop.TNC     // Pointer to the ARDOP TNC used by Listen and Connect
 	pModem  *pactor.Modem
+	opening transport.OpenNetConn // For normal interfaces that support closing while in open
 )
 
 func hasSSID(str string) bool { return strings.Contains(str, "-") }
@@ -148,6 +149,15 @@ func Connect(connectStr string) (success bool) {
 
 	log.Printf("Connecting to %s (%s)...", url.Target, url.Scheme)
 	conn, err := transport.DialURL(url)
+
+	if err == nil {
+		oconn, ok := conn.(transport.OpenNetConn)
+		if ok {
+			opening = oconn
+			err = oconn.Open()
+			opening = nil
+		}
+	}
 
 	// Signal web gui that we are no longer dialing
 	dialing = nil
