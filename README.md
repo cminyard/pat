@@ -67,17 +67,17 @@ This uses the AX.25 layer of the gensio library, see
 <https://github.com/cminyard/gensio>
 
 You need to build this to get it working, and unfortunately, it's not
-an easy process.  On Linux, to build this, you must first check out a
-version of swig that has some bug fixes in the Go part.  These are
-submitted, but not yet in mainline for swig.
+an easy process.  On all platforms, to build this, you must first
+check out a version of swig that has some bug fixes in the Go part.
+These are in mainline for swig, but not yet released.
 
-You will need gcc, g++, and go, flex, bison, and libpcre2-dev
+You will need git, gcc, g++, and go, flex, bison, and libpcre2-dev
 installed, and perhaps a few other things.  You must also make sure
 "go" is in your current PATH.  You can get it at https://go.dev/. Then
 do:
 
 ```
-git clone -b add-goin-newline https://github.com/cminyard/swig
+git clone https://github.com/swig/swig
 cd swig
 ./autogen.sh
 ./configure --prefix $HOME/tmpswig
@@ -97,7 +97,7 @@ cd ..
 git clone -b gensio-work https://github.com/cminyard/wl2k-go
 git clone -b gensio-work https://github.com/cminyard/pat
 cd pat
-./make.bash libax25
+./make.bash libax25 #Linux only
 ./make.bash gensio
 ./make.bash
 ```
@@ -125,7 +125,8 @@ Otherwise replace "localhost" with the proper host and the "8001" with
 the port number you need.  If you need to specify kiss parameters, you
 would add (parm=a,parm=b) after kiss in the gensio string, like
 "kiss(txdelay=100),tcp,...".  See the gensio.5 man page for details on
-this.
+this.  Added parameters to the ax25 gensio can be added by doing
+"(parm=x)" before kiss, no comma.
 
 If you have a serial TNC, you would use something like the following
 for the gensio string:
