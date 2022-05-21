@@ -45,7 +45,7 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.4.0-rc7"
+GENSIOVERSION="2.4.1"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
