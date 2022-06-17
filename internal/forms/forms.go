@@ -1073,7 +1073,7 @@ func (b formMessageBuilder) scanTmplBuildMessage(tmplPath string) (MessageForm, 
 			retVal.Cc = strings.TrimPrefix(lineTmpl, "Cc:")
 		} else if inBody {
 			retVal.Body += lineTmpl + "\n"
-		} else {
+		} else if lineTmpl != "" {
 			log.Printf("skipping unknown template line: '%s'", lineTmpl)
 		}
 	}
