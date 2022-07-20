@@ -295,7 +295,7 @@ var DefaultConfig = Config{
 		Type:       "Kenwood",
 	},
 	GensioAX25: GensioAX25Config{
-		GensioStr: "kiss,tcp,localhost,8001",
+		GensioStr: "kiss,keepopen(discard-badwrites=yes),tcp,localhost,8001",
 		Beacon: BeaconConfig{
 			Every:       3600,
 			Message:     "Winlink P2P",
