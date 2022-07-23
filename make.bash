@@ -82,6 +82,7 @@ function install_gensio {
 if [[ "$OS" == "windows"* ]]; then
 	bdir=`pwd -W`
 	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
+	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32"
 else
 	bdir=`pwd`
 	EXTRALIBS=""
