@@ -65,6 +65,8 @@ of Pat and allow it to do AX.25 on non-Linux hosts.
 This uses the AX.25 layer of the gensio library, see
 <https://github.com/cminyard/gensio>
 
+### Building
+
 You need to build this to get it working, and unfortunately, it's not
 an easy process.  On all platforms, to build this, you must first
 check out a version of swig that has some bug fixes in the Go part.
@@ -103,12 +105,14 @@ cd pat
 
 You should now have a pat executable in the current directory.
 
+### Configuring Pat for gax25
+
 You have to add a configuration for gax25.  It won't have it if you
 already have a configuration installed.  The default one is:
 
 ```
   "gax25": {
-    "gensio": "kiss,tcp,localhost,8001",
+    "gensio": "kiss,keepopen(discard-badwrites=yes),tcp,localhost,8001",
     "beacon": {
       "every": 3600,
       "message": "Winlink P2P",
@@ -127,24 +131,39 @@ would add (parm=a,parm=b) after kiss in the gensio string, like
 this.  Added parameters to the ax25 gensio can be added by doing
 "(parm=x)" before kiss, no comma.
 
-If you have a serial TNC, you would use something like the following
-for the gensio string:
+If you have a Kenwood D710 and want to use the built-in TNC through a
+serial port, you can use the following gensio line:
 
 ```
-(crc=yes)kiss,serialdev,/dev/ttyS0,9600n81
+"gensio": "kiss(d710),serialdev,/dev/ttyUSB1,9600n81,local,rtscts",
 ```
 
-with obvious substitutions where you need them.  This is untested.
+If you want to use 9600 baud instead of 1200 baud, use "d710-9600"
+instead of "d710".
+
+If you have another serial TNC, you would use something like the
+following for the gensio string:
+
+```
+(crc=yes)kiss,serialdev,/dev/ttyS0,9600n81,local
+```
+
+with obvious substitutions where you need them.  If you have hardware
+flow control, add ",rtscts" on to the end of this.  This is untested,
+except on the D710.  The need for the "(crc=yes)" part depends on if
+the TNC does the CRC itself.  The CRC code in the AX25 stack is not
+well tested, but I hacked some things in direwolf so it would send the
+CRC on and it appeared to work.
+
 You can pass parameters to the ax25 gensio by putting:
 
 ```
 (parm=asdf,parm=asdf)
 ```
 
-at the beginning of the gensio string.  In the above example, it
-enables crc checking in the ax25 layer.  By default this is disabled
-as direwolf does it for you, but it might be required for a serial
-TNC.
+at the beginning of the gensio string (like the CRC in the previous
+example).  By default crc is disabled as direwolf/soundmodem does it
+for you, but it might be required for a serial TNC.
 
 To see the man page telling about gensio strings, do the following
 from the pat directory after building:
@@ -152,6 +171,8 @@ from the pat directory after building:
 ```
 nroff -man .build/gensio-2.4.0-rc4/man/gensio.5 | less -r
 ```
+
+### Using Pat with gax25
 
 To use this, you basically just put gax25 where you would normally use
 ax25, except there's none of the linux setup.  Once you do "pat
