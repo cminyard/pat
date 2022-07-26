@@ -140,7 +140,9 @@ serial port, you can use the following gensio line:
 ```
 
 If you want to use 9600 baud instead of 1200 baud, use "d710-9600"
-instead of "d710".
+instead of "d710".  Note that once you put the D710 in KISS mode, you
+have to reset the TNC to get it out of KISS mode.  Turning the radio
+off and does this; there may be another way but I don't know how.
 
 If you have another serial TNC, you would use something like the
 following for the gensio string:
@@ -155,6 +157,17 @@ except on the D710.  The need for the "(crc=yes)" part depends on if
 the TNC does the CRC itself.  The CRC code in the AX25 stack is not
 well tested, but I hacked some things in direwolf so it would send the
 CRC on and it appeared to work.
+
+If you need some special startup string to talk to your TNC, you can
+send that with changing "kiss" to:
+```
+  kiss(setupstr='<string>')
+```
+setup string is a normal "C" string, you can use \n for newline, \r
+for carraige return, \xnn for the hex value nn, etc.  Any \ needs to
+be doubled.  If you specify a setupstr, a 1 second wait is done
+for the string to complete.  If you need more, you can add
+"setup-delay=n" where "n" is in milliseconds.
 
 You can pass parameters to the ax25 gensio by putting:
 
