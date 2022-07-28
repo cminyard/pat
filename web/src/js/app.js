@@ -458,6 +458,7 @@ function initConnectModal() {
         break;
       case 'serial-tnc':
       case 'ax25':
+      case 'gax25':
         $('#modeSearchSelect').val('packet');
         break;
       default:
