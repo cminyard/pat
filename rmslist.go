@@ -208,7 +208,7 @@ func addBandwidth(gc cmsapi.GatewayChannel, chURL *url.URL) {
 	}
 }
 
-var transports = []string{MethodAX25, MethodPactor, MethodArdop, MethodVaraFM, MethodVaraHF}
+var transports = []string{MethodAX25, MethodGensioAX25, MethodPactor, MethodArdop, MethodVaraFM, MethodVaraHF}
 
 func toTransport(gc cmsapi.GatewayChannel) string {
 	modes := strings.ToLower(gc.SupportedModes)
