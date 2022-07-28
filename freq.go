@@ -97,6 +97,8 @@ func VFOForTransport(transport string) (vfo hamlib.VFO, rigName string, ok bool,
 		rig = config.Ardop.Rig
 	case MethodAX25:
 		rig = config.AX25.Rig
+	case MethodGensioAX25:
+		rig = config.GensioAX25.Rig
 	case MethodPactor:
 		rig = config.Pactor.Rig
 	default:

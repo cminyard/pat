@@ -461,6 +461,8 @@ func bandwidthsHandler(w http.ResponseWriter, req *http.Request) {
 		fallthrough
 	case MethodAX25:
 		fallthrough
+	case MethodGensioAX25:
+		fallthrough
 	case MethodTelnet:
 		fallthrough
 	case MethodSerialTNC:
