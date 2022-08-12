@@ -212,6 +212,31 @@ step since that's for Linux only.  You will end up with a binary that
 has some DLL dependencies to mingw64 stuff, but that is unavoidable,
 as far as I can tell.
 
+### Scripting with gax25
+
+Some gateway connections require you to interact with the gateway
+before it connects you to the remote system.  gax25 supports this by
+calling an external program and connecting it's stdin/stdout to ax25.
+So anything written to stdout by the external program will be sent out
+ax25, and anything received on ax25 will be sent to the external
+program's stdin.  This way you can use something like "expect" (with
+expect_user and send_user) to do the interaction you need.  Or you can
+use any other programming language you would like.  Just be careful
+that you flush output when writing, or things may not be sent.
+
+To use scripting, add script= to the url as a standard url item. So,
+for instance, I used:
+
+```
+   pat connect 'gax25:///n5cor-10?parms=extended=0&script=./testscr'
+```
+
+where "testscr" is the program in the current directory.  Once the
+program exits, the connection process will continue normally.
+
+If connecting via the web gui, you can add &script= at the end of the
+parms field and it should work.
+
 ## Copyright/License
 
 Copyright (c) 2020 Martin Hebnes Pedersen LA5NTA
