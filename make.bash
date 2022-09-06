@@ -56,7 +56,7 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.5.2"
+GENSIOVERSION="2.6.0-rc3"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
@@ -74,7 +74,7 @@ function install_gensio {
 	else
 		cd "${GENSIODIST}"
 	fi
-	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-openipmi=no && make && cd ../../
+	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no --with-sound=no && make && cd ../../
 }
 
 [[ "$1" == "gensio" ]] && install_gensio && exit 0;
@@ -83,20 +83,27 @@ function install_gensio {
 if [[ "$OS" == "windows"* ]]; then
 	bdir=`pwd -W`
 	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
-	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32"
+	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32"
 else
 	bdir=`pwd`
 	EXTRALIBS=""
 fi
 
-# Link against gensio (statically) on all platforms
+# Uncomment these to link dynamically against gensio on all platforms
 #GENSIO_CXXFLAGS="-I/usr/local/include"
-#GENSIO_LDFLAGS="-L/usr/local/lib -lgensiocpp -lgensio"
-LIB1=".build/${GENSIODIST}/c++/lib/.libs/libgensiocpp.a"
-LIB2=".build/${GENSIODIST}/lib/.libs/libgensio.a"
-if [[ -z "$GENSIO_LDFLAGS" ]] && [[ -f "$LIB1" ]] && [[ -f "$LIB2" ]]; then
+#GENSIO_LDFLAGS="-L/usr/local/lib -lgensiocpp -lgensiomdnscpp -lgensiooshcpp -lgensioosh -lgensiomdns -lgensio"
+
+# Uncomment these to link statically against gensio on all platforms
+GENSIO_LIBS=""
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/c++/lib/.libs/libgensiocpp.a"
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/c++/lib/.libs/libgensiomdnscpp.a"
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/c++/lib/.libs/libgensiooshcpp.a"
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/lib/.libs/libgensio.a"
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/lib/.libs/libgensiomdns.a"
+GENSIO_LIBS="${GENSIO_LIBS} .build/${GENSIODIST}/lib/.libs/libgensioosh.a"
+if [[ -z "$GENSIO_LDFLAGS" ]] && [[ -n "$GENSIO_LIBS" ]]; then
 	export GENSIO_CXXFLAGS="-I${bdir}/.build/${GENSIODIST}/include -I${bdir}/.build/${GENSIODIST}/c++/include -DGENSIO_LINK_STATIC"
-	export GENSIO_LDFLAGS="${bdir}/${LIB1} ${bdir}/${LIB2} ${EXTRALIBS}"
+	export GENSIO_LDFLAGS="${GENSIO_LIBS} ${EXTRALIBS}"
 fi
 if [[ -z "$GENSIO_LDFLAGS" ]]; then
 	echo "WARNING: No static gensio library available."
