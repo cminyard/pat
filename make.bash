@@ -56,7 +56,7 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.6.0-rc4"
+GENSIOVERSION="2.6.0-rc5"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
@@ -83,7 +83,7 @@ function install_gensio {
 if [[ "$OS" == "windows"* ]]; then
 	bdir=`pwd -W`
 	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
-	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32"
+	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32 -lwinmm"
 else
 	bdir=`pwd`
 	EXTRALIBS="-lasound"
