@@ -56,7 +56,7 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.6.0-rc3"
+GENSIOVERSION="2.6.0-rc4"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
@@ -74,7 +74,7 @@ function install_gensio {
 	else
 		cd "${GENSIODIST}"
 	fi
-	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no --with-sound=no && make && cd ../../
+	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no && make && cd ../../
 }
 
 [[ "$1" == "gensio" ]] && install_gensio && exit 0;
@@ -86,7 +86,7 @@ if [[ "$OS" == "windows"* ]]; then
 	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32"
 else
 	bdir=`pwd`
-	EXTRALIBS=""
+	EXTRALIBS="-lasound"
 fi
 
 # Uncomment these to link dynamically against gensio on all platforms
