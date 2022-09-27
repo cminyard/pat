@@ -6,7 +6,7 @@
 
 [Setup]
 AppName=Pat-Gensio
-AppVersion=0.7
+AppVersion=0.8
 WizardStyle=modern
 DefaultDirName={autopf}\Pat-Gensio 
 DisableProgramGroupPage=yes
@@ -18,8 +18,11 @@ ChangesEnvironment=true
 
 [Files]
 Source: "Pat.exe"; DestDir: "{app}"
+Source: ".build/gensio-2.6.0-rc5/tools/gsound.exe"; DestDir: "{app}"
 ; Install our DLL to {app} so we can access it at uninstall time.
 ; Use "Flags: dontcopy" if you don't need uninstall time access.
+;
+; Base files needed from mingw64
 Source: "c:/msys64/mingw64/bin/libgcc_s_seh-1.dll"; DestDir: "{app}"
 Source: "c:/msys64/mingw64/bin/libstdc++-6.dll"; DestDir: "{app}"
 Source: "c:/msys64/mingw64/bin/libwinpthread-1.dll"; DestDir: "{app}"
