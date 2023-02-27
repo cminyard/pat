@@ -1019,7 +1019,7 @@ func (b formMessageBuilder) initFormValues() {
 }
 
 func (b formMessageBuilder) scanTmplBuildMessage(tmplPath string) (MessageForm, error) {
-	var inBody = false
+	inBody := false
 
 	infile, err := os.Open(tmplPath)
 	if err != nil {
