@@ -256,7 +256,7 @@ function initComposeModal() {
     $('#composer').modal('toggle');
   });
   const tokenfieldConfig = {
-    delimiters: [',', ';', ' '], // Must be in sync with SplitFunc (utils.go)
+    delimiter: [',', ';', ' '], // Must be in sync with SplitFunc (utils.go)
     inputType: 'email',
     createTokensOnBlur: true,
   };
