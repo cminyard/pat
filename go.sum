@@ -17,6 +17,8 @@ github.com/cminyard/go/gensio v0.1.9 h1:Q0llTgS2dwNXsaGLctE4lQHq/B9EQCCiKP8WNkrr
 github.com/cminyard/go/gensio v0.1.9/go.mod h1:2vwS3wYb5HsrdJVSSbwfRU+Ryc41ZS8lVN4UooRJEAA=
 github.com/cminyard/go/gensio v0.1.10 h1:qzn3VWzGnI7AdjzBKmGV1F+D/9H3GVnMO69Vn8qC/h4=
 github.com/cminyard/go/gensio v0.1.10/go.mod h1:2vwS3wYb5HsrdJVSSbwfRU+Ryc41ZS8lVN4UooRJEAA=
+github.com/cminyard/go/gensio v0.1.11 h1:ZmM5+q7Cu3i+83eAfwWANcJgy7S/rxfseUeyXvApzD8=
+github.com/cminyard/go/gensio v0.1.11/go.mod h1:2vwS3wYb5HsrdJVSSbwfRU+Ryc41ZS8lVN4UooRJEAA=
 github.com/creack/goselect v0.1.2 h1:2DNy14+JPjRBgPzAd1thbQp4BSIihxcBf0IXhQXDRa0=
 github.com/creack/goselect v0.1.2/go.mod h1:a/NhLweNvqIYMuxcMOuWY516Cimucms3DglDzQP3hKY=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

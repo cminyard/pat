@@ -56,7 +56,7 @@ if [[ "$OS" == "linux"* ]]; then
 	fi
 fi
 
-GENSIOVERSION="2.6.2"
+GENSIOVERSION="2.6.3"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
@@ -84,9 +84,10 @@ if [[ "$OS" == "windows"* ]]; then
 	bdir=`pwd -W`
 	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
 	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32 -lwinmm"
+	EXTRALIBS="$EXTRALIBS --lhid -lsetupapi"
 else
 	bdir=`pwd`
-	EXTRALIBS="-lasound"
+	EXTRALIBS="-lasound -ludev"
 fi
 
 # Uncomment these to link dynamically against gensio on all platforms
