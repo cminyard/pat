@@ -84,7 +84,7 @@ if [[ "$OS" == "windows"* ]]; then
 	bdir=`pwd -W`
 	EXTRALIBS="-lws2_32 -liphlpapi -lgdi32 -lbcrypt"
 	EXTRALIBS="$EXTRALIBS -lsecur32 -luserenv -lwtsapi32 -lole32 -lwinmm"
-	EXTRALIBS="$EXTRALIBS --lhid -lsetupapi"
+	EXTRALIBS="$EXTRALIBS -lhid -lsetupapi"
 else
 	bdir=`pwd`
 	EXTRALIBS="-lasound -ludev"
