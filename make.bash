@@ -90,9 +90,13 @@ else
 	EXTRALIBS="-lasound -ludev"
 fi
 
-# Uncomment these to link dynamically against gensio on all platforms
+# Uncomment these to link dynamically against gensio on Linux
 #GENSIO_CXXFLAGS="-I/usr/local/include"
 #GENSIO_LDFLAGS="-L/usr/local/lib -lgensiocpp -lgensiomdnscpp -lgensiooshcpp -lgensioosh -lgensiomdns -lgensio"
+
+# Uncomment these to link dynamically against gensio on Windows MINGW64
+#GENSIO_CXXFLAGS="-I/mingw64/include"
+#GENSIO_LDFLAGS="-L/mingw64/lib -lgensiocpp -lgensiomdnscpp -lgensiooshcpp -lgensioosh -lgensiomdns -lgensio"
 
 # Uncomment these to link statically against gensio on all platforms
 GENSIO_LIBS=""
