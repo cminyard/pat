@@ -6,7 +6,7 @@
 
 [Setup]
 AppName=Pat-Gensio
-AppVersion=0.11
+AppVersion=0.12
 WizardStyle=modern
 DefaultDirName={autopf}\Pat-Gensio 
 DisableProgramGroupPage=yes
@@ -18,7 +18,7 @@ ChangesEnvironment=true
 
 [Files]
 Source: "Pat.exe"; DestDir: "{app}"
-Source: ".build/gensio-2.6.5/tools/gsound.exe"; DestDir: "{app}"
+Source: ".build/gensio-2.8.0/tools/gsound.exe"; DestDir: "{app}"
 ; Install our DLL to {app} so we can access it at uninstall time.
 ; Use "Flags: dontcopy" if you don't need uninstall time access.
 ;
