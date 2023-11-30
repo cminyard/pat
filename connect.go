@@ -138,6 +138,10 @@ func Connect(connectStr string) (success bool) {
 		}
 	}
 
+	if url.Scripts == "" {
+		url.Scripts = fOptions.ScriptsPath
+	}
+
 	// Radio Only?
 	radioOnly := fOptions.RadioOnly
 	if v := url.Params.Get("radio_only"); v != "" {
