@@ -65,6 +65,25 @@ of Pat and allow it to do AX.25 on non-Linux hosts.
 This uses the AX.25 layer of the gensio library, see
 <https://github.com/cminyard/gensio>
 
+### Config File
+
+This version of pat uses a different config directory than standard
+pat.  This is a change from previous versions of PatGensio (new in the
+gensio-0.15 version), but it allows the program to be properly
+identified as one containing the gensio library, and allows better
+tracking.
+
+Your config files are in:
+```
+Linux:   ~/.config/patgensio
+Windows: /Users/<username>/AppData/Local/patgensio
+MacOS:   ~/Library/Application\ Support/patgensio
+```
+
+Pat and older versions of PatGensio will have these in a directory
+named "pat", not "patgensio".  When moving to the new version, you can
+copy the old directory over to the new one.
+
 ### Building
 
 You need to build this to get it working, and unfortunately, it's not
