@@ -18,7 +18,7 @@ ChangesEnvironment=true
 
 [Files]
 Source: "Pat.exe"; DestDir: "{app}"
-Source: ".build/gensio-2.8.2/tools/gsound.exe"; DestDir: "{app}"
+Source: ".build/gensio-2.8.4/tools/gsound.exe"; DestDir: "{app}"
 ; Install our DLL to {app} so we can access it at uninstall time.
 ; Use "Flags: dontcopy" if you don't need uninstall time access.
 ;
