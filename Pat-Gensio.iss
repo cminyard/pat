@@ -6,7 +6,7 @@
 
 [Setup]
 AppName=Pat-Gensio
-AppVersion=0.16
+AppVersion=0.17
 WizardStyle=modern
 DefaultDirName={autopf}\Pat-Gensio 
 DisableProgramGroupPage=yes
