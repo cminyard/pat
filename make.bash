@@ -63,7 +63,7 @@ else
 	fi
 fi
 
-GENSIOVERSION="2.8.10"
+GENSIOVERSION="2.8.11"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
