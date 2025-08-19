@@ -72,7 +72,7 @@ GENSIOVERSION="2.8.15"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
-GENSIODIST_PATCHES=""
+GENSIODIST_PATCHES="patches/0001-ax25-Remove-len-0-restriction-for-UI-and-heard-packe.patch"
 function install_gensio {
 	mkdir -p .build && cd .build
 	if [ ! -f "${GENSIODIST}" ]; then
@@ -89,7 +89,7 @@ function install_gensio {
 	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no && make && cd ../../
 }
 
-[[ "$1" == "gensio" ]] && install_gensio && exit 0;
+[[ "$1" == "gensio" ]] && install_gensio && exit $?;
 
 EXTRALIBS=""
 EXTRA_CXXFLAGS=""
