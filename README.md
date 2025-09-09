@@ -179,6 +179,92 @@ from the pat directory after building:
 nroff -man .build/gensio-2.4.0-rc4/man/gensio.5 | less -r
 ```
 
+### ax25+gensio and the built-in TNC
+
+ax25+gensio has a built-in TNC, so with it there is no need for an
+external TNC like direwolf or soundmodem.  Configuring it is a little
+tricky, but once you get it it's not a big deal.
+
+The first thing you must do is find the sound device.  Run:
+
+```
+$ gsound -L
+```
+
+On Windows, you will see something like:
+
+```
+0:Microphone (2- USB Audio CODEC        input,inchans=2
+1:Microphone Array (Senary Audio)       input,inchans=2
+0:Speakers (2- USB Audio CODEC )        output,outchans=2
+```
+
+You can generally just pick part of the name (the part on the left
+side).  I'm using the USB Audio CODEC, so "USB" here will work just
+fine.
+
+On Linux it's a little messier, you will see a lot of output, but you
+are looking for something like:
+
+```
+plughw:CARD=Device,DEV=0
+    USB PnP Sound Device, USB Audio
+    Hardware device with all software conversions
+        input,output
+```
+
+and you will need the whole "plughw:CARD=Device,DEV=0" for the name.
+
+Then you will set the following in the configuration:
+
+```
+  "gensio": {
+    "gensio": "afskmdm(debug=0x18),sound(48000-1-float),USB"
+  },
+```
+
+This would work in the Windows example above.  For Linux you would use:
+
+```
+    "gensio": "afskmdm(debug=0x18),sound(48000-1-float),plughw:CARD=Device,DEV=0"
+  },
+```
+
+This will work find with a Signalink or other sound interface that
+uses VOX.  If you have something that has a separate key requirement,
+it's more complicated.  If it's a serial port keyed with the RTS or
+line, you need to find the serial port and tell afskmdm where it is.
+On Windows find the COM port (like COM10) and set the keytype (rts or
+dtr) and use the "key" string to tell it where to find the comm port.
+
+```
+    "gensio": "afskmdm(debug=0x18,tx-predelay=500,keytype=rts,key=\"sdev,COM10\"),sound(48000-1-float),USB"
+  },
+```
+
+On Linux, you need to find the /dev/ttyUSBxxx device associated with
+the connection.  Just plug it in and do "ls /dev/ttyUSB*" and see what
+appears.  You can use that directly, but it can change when your
+system reboots or you add other serial ports.  It's best to find the
+path.  do "ls -l /dev/serial/by-path" and find the usb device that
+links to the proper /dev/ttyUSBxxx.  It's basically the same as the
+Windows one:
+
+```
+    "gensio": "afskmdm(debug=0x18,tx-predelay=500,keytype=rts,key=\"sdev,/dev/serial/by-path/pci-0000:04:00.3-usb-0:1.3.2.4.1.2:1.0-port0\"),sound(48000-1-float),plughw:CARD=Device,DEV=0"
+  },
+```
+
+If you have a CM108 based key, then it's a little easier, just do:
+
+```
+    "gensio": "afskmdm(debug=0x18,key=\"cm108gpio,1\"),sound(48000-1-float),USB"
+  },
+```
+
+the same on Windows and Linux.  The ",1" in the key string tells which
+gpio to use, generally 1.
+
 ### Using Pat with ax25+gensio
 
 To use this, you basically just put ax25+gensio where you would
