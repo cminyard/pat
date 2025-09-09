@@ -226,6 +226,7 @@ Then you will set the following in the configuration:
 This would work in the Windows example above.  For Linux you would use:
 
 ```
+  "gensio": {
     "gensio": "afskmdm(debug=0x18),sound(48000-1-float),plughw:CARD=Device,DEV=0"
   },
 ```
@@ -238,6 +239,7 @@ On Windows find the COM port (like COM10) and set the keytype (rts or
 dtr) and use the "key" string to tell it where to find the comm port.
 
 ```
+  "gensio": {
     "gensio": "afskmdm(debug=0x18,tx-predelay=500,keytype=rts,key=\"sdev,COM10\"),sound(48000-1-float),USB"
   },
 ```
@@ -251,6 +253,7 @@ links to the proper /dev/ttyUSBxxx.  It's basically the same as the
 Windows one:
 
 ```
+  "gensio": {
     "gensio": "afskmdm(debug=0x18,tx-predelay=500,keytype=rts,key=\"sdev,/dev/serial/by-path/pci-0000:04:00.3-usb-0:1.3.2.4.1.2:1.0-port0\"),sound(48000-1-float),plughw:CARD=Device,DEV=0"
   },
 ```
@@ -258,6 +261,7 @@ Windows one:
 If you have a CM108 based key, then it's a little easier, just do:
 
 ```
+  "gensio": {
     "gensio": "afskmdm(debug=0x18,key=\"cm108gpio,1\"),sound(48000-1-float),USB"
   },
 ```
