@@ -67,10 +67,12 @@ This uses the AX.25 layer of the gensio library, see
 
 ### Building
 
-You need to build this to get it working, and unfortunately, it's not
-an easy process.  On all platforms, to build this, you must first
-check out a version of swig that has some bug fixes in the Go part.
-These are in mainline for swig, but not yet released.
+Binaries are available at <https://github.com/cminyard/pat> under
+"Releases".  You can build it yourself, though, but unfortunately it's
+not an easy process.  On all platforms, to build this, you need out a
+version of swig that has some bug fixes in the Go part.  These are in
+mainline for swig and recently released, but you might have to check
+out swig from it's repository and use it.
 
 You will need git, gcc, g++, and go, flex, bison, and libpcre2-dev
 installed, and perhaps a few other things.  You must also make sure
