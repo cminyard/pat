@@ -86,7 +86,7 @@ function install_gensio {
 	else
 		cd "${GENSIODIST}"
 	fi
-	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no && make && cd ../../
+	./configure --prefix=/ --enable-static --disable-shared --with-go=no --with-sctp=no --with-mdns=no --with-ssl=no --with-certauth=no --with-ipmisol=no --with-glib=no --with-tcl=no && make && cd ../../
 }
 
 [[ "$1" == "gensio" ]] && install_gensio && exit $?;
