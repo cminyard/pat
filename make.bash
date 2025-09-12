@@ -68,11 +68,11 @@ else
 	fi
 fi
 
-GENSIOVERSION="2.8.15"
+GENSIOVERSION="3.0.0"
 GENSIODIST="gensio-${GENSIOVERSION}"
 GENSIODIST_BASEURL="https://sourceforge.net/projects/ser2net/files/ser2net"
 GENSIODIST_URL="${GENSIODIST_BASEURL}/${GENSIODIST}.tar.gz"
-GENSIODIST_PATCHES="patches/0001-ax25-Remove-len-0-restriction-for-UI-and-heard-packe.patch"
+GENSIODIST_PATCHES=""
 function install_gensio {
 	mkdir -p .build && cd .build
 	if [ ! -f "${GENSIODIST}" ]; then
