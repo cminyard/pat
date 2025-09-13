@@ -143,7 +143,7 @@ If you have another serial TNC, you would use something like the
 following for the gensio string:
 
 ```
-(crc=yes)kiss,serialdev,/dev/ttyS0,9600n81,local
+(crc=yes,debug=0x18)kiss,serialdev,/dev/ttyS0,9600n81,local
 ```
 
 with obvious substitutions where you need them.  If you have hardware
@@ -152,6 +152,10 @@ except on the D710.  The need for the "(crc=yes)" part depends on if
 the TNC does the CRC itself.  The CRC code in the AX25 stack is not
 well tested, but I hacked some things in direwolf so it would send the
 CRC on and it appeared to work.
+
+The "debug=0x18" thing prints out packets as they are received and
+sent.  You can remove that if you don't care, or add it if you do.
+These are parameters to the ax25 layer.
 
 If you need some special startup string to talk to your TNC, you can
 send that with changing "kiss" to:
@@ -328,6 +332,121 @@ program exits, the connection process will continue normally.
 
 If connecting via the web gui, you can add &script= at the end of the
 parms field and it should work.
+
+### Building ax25 gensio on Old Linux OSes
+
+In some cases it's better to build on an old release.  This can be
+done with chroot and debootstrap.  This will only work on debian-based
+systems.  First make sure debootstrap is installed on your system:
+
+```
+  sudo apt install debootstrap
+```
+
+For i386, do:
+
+```
+  mkdir -p chroot/debian-386-stretch
+  sudo debootstrap --arch=i386 stretch chroot/debian-386-stretch/ http://archive.debian.org/debian-archive/debian
+  sudo setarch i686 chroot chroot/debian-386-stretch
+  apt install debootstrap curl libpcre2-dev
+  cd tmp
+  wget https://go.dev/dl/go1.25.1.linux-386.tar.gz
+```
+
+For amd64, do:
+
+```
+  mkdir -p chroot/debian-amd64-stretch
+  sudo debootstrap --arch=amd64 stretch chroot/debian-amd64-stretch/ http://archive.debian.org/debian-archive/debian
+  sudo chroot chroot/debian-amd64-stretch
+  apt install debootstrap curl libpcre2-dev
+  cd tmp
+  wget https://go.dev/dl/go1.25.1.linux-amd64.tar.gz
+```
+
+For arm32, do:
+
+```
+  mkdir -p chroot/debian-arm32-stretch
+  sudo debootstrap --arch=armhf stretch chroot/debian-arm32-stretch/ http://archive.debian.org/debian-archive/debian
+  sudo setarch i686 chroot chroot/debian-arm32-stretch
+  apt install debootstrap curl libpcre2-dev
+  cd tmp
+  wget https://go.dev/dl/go1.25.1.linux-armv6l.tar.gz
+```
+
+For arm64, do:
+
+```
+  mkdir -p chroot/debian-arm64-stretch
+  sudo debootstrap --arch=arm64 stretch chroot/debian-arm64-stretch/ http://archive.debian.org/debian-archive/debian
+  sudo chroot chroot/debian-arm64-stretch
+  apt install debootstrap curl libpcre2-dev
+  cd tmp
+  wget https://go.dev/dl/go1.25.1.linux-arm64.tar.gz
+```
+
+Now the machine-independent portions:
+
+```
+  # Do an apt install of the packages required for build describe above
+  useradd -m cminyard
+  su - cminyard
+  exec bash
+  tar xzf /tmp/go1.25*
+  mv go gobin
+  cat <<END >>.profile
+  export PATH=$HOME/gobin/bin:$PATH
+  export GOROOT=$HOME/gobin
+  END
+  mkdir git
+  cd git
+  wget https://ftp.gnu.org/gnu/bison/bison-3.8.tar.gz
+  tar xzf bison-3.8.tar.gz
+  cd bison-3.8
+  ./configure
+  make
+  exit
+  cd /home/cminyard/git/bison-3.8
+  make install
+  su - cminyard
+  exec bash
+  cd git
+  git clone https://github.com/swig/swig.git
+  git clone https://github.com/cminyard/wl2k-go.git
+  git clone https://github.com/cminyard/pat.git
+  cd swig
+  ./autogen.sh
+  ./configure --with-python --with-go
+  make
+  exit
+  cd /home/cminyard/git/swig
+  make install
+  su - cminyard
+  exec bash
+  cd git/wl2k-go
+  git checkout gensio-work
+  cd ../pat
+  git checkout gensio-work
+  ./make.bash libax25
+  ./make.bash gensio
+  ./make.bash
+```
+
+You must also add "-ldl" to the GENSIO\_LIBS environment variable in
+the "make.bash" script or it won't link, you'll get an error about
+dlopen.
+
+Every time you want to use this, do the setarch+chroot command and such:
+
+```
+  sudo setarch i686 chroot chroot/debian386-arm32-stretch
+  su - cminyard
+  exec bash
+```
+
+and you can update things with git and rebuild.
 
 ## Copyright/License
 
