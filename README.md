@@ -264,6 +264,9 @@ Windows one:
   },
 ```
 
+Note that to access serial ports on Linux, you must be a member of the
+"dialout" group.
+
 If you have a CM108 based key, then it's a little easier, just do:
 
 ```
@@ -274,6 +277,28 @@ If you have a CM108 based key, then it's a little easier, just do:
 
 the same on Windows and Linux.  The ",1" in the key string tells which
 gpio to use, generally 1.
+
+On Linux, by default the /dev/hidrawN devices that you must use to
+access the cm108 GPIO are for root-only.  To fix that, first do
+"lsusb" and find the ID of your device.  The output will look
+something like:
+
+```
+Bus 001 Device 004: ID 0d8c:013a C-Media Electronics, Inc. USB PnP Sound Device
+```
+
+On the ID, the number before the ':' is the vendor id, the number after
+is the product id.  Now add the following in a file named
+`/etc/udev/rules.d/71-cm108.rules`:
+
+```
+# A C-Media Electronics USB PnP Sound device, for GPIO
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0d8c", ATTRS{idProduct}=="013a", MODE:="0660", GROUP="dialout"
+```
+
+substituting your vendor and product ID with the ones above.  You will
+need to be a member of the `dialout` group again, because that's what
+the above does.  If you set the mode to `0666` then anyone could use it.
 
 ### Using Pat with ax25+gensio
 
