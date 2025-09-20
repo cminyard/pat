@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 //go:build libhamlib
-// +build libhamlib
 
 package tui
 

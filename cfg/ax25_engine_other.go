@@ -1,5 +1,4 @@
 //go:build !libax25
-// +build !libax25
 
 package cfg
 
