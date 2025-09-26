@@ -94,6 +94,16 @@ func TestVOACAPLAdapter_ParseOutput(t *testing.T) {
 				SignalPower:     -106,
 			},
 		},
+		{
+			// Midnight (00:00 UTC) edge case: LA1J on 40m band. Checks correct handling of midnight in VOACAP output parsing.
+			fileName: "LA5NTA_to_LA1J_40m_midnight.out",
+			expected: &Prediction{
+				LinkQuality:     39,
+				SNR:             49,
+				PathReliability: 0.92,
+				SignalPower:     -105,
+			},
+		},
 	}
 
 	predictor := &voacapPredictor{}

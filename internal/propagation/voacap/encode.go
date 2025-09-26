@@ -1,6 +1,7 @@
 package voacap
 
 import (
+	"cmp"
 	"fmt"
 	"io"
 	"math"
@@ -102,6 +103,7 @@ func writeCoeffsCard(w io.Writer, coeffs string) {
 }
 
 func writeTimeCard(w io.Writer, start, end, step, mode int) {
+	start, end = cmp.Or(start, 24), cmp.Or(end, 24) // Midnight hour is represented as 24
 	fmt.Fprintf(w, "TIME         %5d%5d%5d%5d\n", start, end, step, mode)
 }
 

@@ -213,7 +213,7 @@ func (*voacapPredictor) parseOutput(output io.Reader) (*Prediction, error) {
 func toPrediction(output *voacap.VoacapOutput, outputRaw string) (*Prediction, error) {
 	var prediction *voacap.Prediction
 	for _, p := range output.Predictions {
-		if p.Hour == float64(output.Request.Hour) {
+		if int(p.Hour)%24 == output.Request.Hour%24 {
 			prediction = &p
 			break
 		}
