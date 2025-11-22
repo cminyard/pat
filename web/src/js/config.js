@@ -360,9 +360,26 @@ $(document).ready(function() {
         .map(addr => ({ value: addr, label: addr }));
       $('#auxiliary_addresses').tokenfield('setTokens', auxAddrs);
 
-      // Populate rig selects
-      // Initialize rig selects with any existing config
-      updateRigSelects();
+      // Populate Hamlib rigs
+      const rigs = config.hamlib_rigs || {};
+      const rigsContainer = $('#rigsContainer');
+      const rigTemplate = $('.rig-row').first().clone();
+      rigsContainer.empty();
+
+      Object.entries(rigs).forEach(([name, rig]) => {
+        const row = rigTemplate.clone();
+        const nameInput = row.find('.rig-name').val(name);
+        nameInput.on('input', updateRigSelects); // Add input listener
+        row.find('.rig-network').val(rig.network || '');
+        row.find('.rig-address').val(rig.address || '');
+        rigsContainer.append(row);
+      });
+
+      if (Object.keys(rigs).length === 0) {
+        rigsContainer.append(rigTemplate.clone());
+      }
+
+      updateRigSelects(); // Refresh rig dropdowns with loaded data
 
       // Populate transport configs
       $('#ardop_addr').val((config.ardop && config.ardop.addr) || '');
@@ -380,7 +397,6 @@ $(document).ready(function() {
       $('#vara_fm_addr').val((config.varafm && config.varafm.addr) || '');
       $('#vara_fm_bandwidth').val((config.varafm && config.varafm.bandwidth && config.varafm.bandwidth.toString()) || '');
 
-      // Populate AX25 config
       // Populate transport rig selections
       $('#ardop_rig').val((config.ardop && config.ardop.rig) || '');
       $('#ardop_ptt_ctrl').prop('checked', (config.ardop && config.ardop.ptt_ctrl) || false);
@@ -392,17 +408,12 @@ $(document).ready(function() {
       $('#vara_hf_ptt_ctrl').prop('checked', (config.varahf && config.varahf.ptt_ctrl) || false);
       $('#vara_fm_rig').val((config.varafm && config.varafm.rig) || '');
       $('#vara_fm_ptt_ctrl').prop('checked', (config.varafm && config.varafm.ptt_ctrl) || false);
+
+      // Populate telnet config
       $('#telnet_listen_addr').val((config.telnet && config.telnet.listen_addr) || '');
       $('#telnet_password').val((config.telnet && config.telnet.password) || '');
-      $('#vara_hf_rig').val((config.varahf && config.varahf.rig) || '');
-      $('#vara_fm_rig').val((config.varafm && config.varafm.rig) || '');
 
-      // Set listen methods checkboxes
-      const listenMethods = config.listen || [];
-      $('input[name="listen_methods[]"]').each(function() {
-        $(this).prop('checked', listenMethods.includes($(this).val()));
-      });
-
+      // Populate AX25 config
       const ax25Config = config.ax25 || {};
       // Initialize all engine configs as collapsed first
       $('.ax25-engine-config .panel-collapse').collapse('hide');
@@ -426,26 +437,11 @@ $(document).ready(function() {
       $('#gpsd_update_locator').prop('checked', (config.gpsd && config.gpsd.update_locator) || false);
       $('#gpsd_addr').val((config.gpsd && config.gpsd.addr) || '');
 
-      // Populate Hamlib rigs
-      const rigs = config.hamlib_rigs || {};
-      const rigsContainer = $('#rigsContainer');
-      const rigTemplate = $('.rig-row').first().clone();
-      rigsContainer.empty();
-
-      Object.entries(rigs).forEach(([name, rig]) => {
-        const row = rigTemplate.clone();
-        const nameInput = row.find('.rig-name').val(name);
-        nameInput.on('input', updateRigSelects); // Add input listener
-        row.find('.rig-network').val(rig.network || '');
-        row.find('.rig-address').val(rig.address || '');
-        rigsContainer.append(row);
+      // Set listen methods checkboxes
+      const listenMethods = config.listen || [];
+      $('input[name="listen_methods[]"]').each(function() {
+        $(this).prop('checked', listenMethods.includes($(this).val()));
       });
-
-      if (Object.keys(rigs).length === 0) {
-        rigsContainer.append(rigTemplate.clone());
-      }
-
-      updateRigSelects(); // Refresh rig dropdowns with loaded data
 
       // Populate connect aliases
       const aliases = config.connect_aliases || {};
@@ -718,10 +714,12 @@ $(document).ready(function() {
     });
 
     $('.rig-select').each(function() {
+      const currentVal = $(this).val();
       $(this).empty().append($('<option>').val('').text('None'));
       rigNames.forEach(name => {
         $(this).append($('<option>').val(name).text(name));
       });
+      $(this).val(currentVal);
     });
   }
 
