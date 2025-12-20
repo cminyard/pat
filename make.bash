@@ -71,7 +71,7 @@ fi
 echo
 
 echo "Building Pat v$VERSION..."
-go build -tags "$TAGS" -o pat
+go build -tags "$TAGS"
 
 # Build macOS pkg
 if [[ "$OS" == "darwin"* ]] && command -v packagesbuild >/dev/null 2>&1; then
