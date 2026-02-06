@@ -22,10 +22,18 @@ Source: ".build/gensio-3.0.0/tools/gsound.exe"; DestDir: "{app}"
 ; Install our DLL to {app} so we can access it at uninstall time.
 ; Use "Flags: dontcopy" if you don't need uninstall time access.
 ;
+; Base files needed from ucrt64
+Source: "c:/msys64/ucrt64/bin/libgcc_s_seh-1.dll"; DestDir: "{app}"
+Source: "c:/msys64/ucrt64/bin/libstdc++-6.dll"; DestDir: "{app}"
+Source: "c:/msys64/ucrt64/bin/libwinpthread-1.dll"; DestDir: "{app}"
+; Base files needed from mingw32
+;Source: "c:/msys64/mingw32/bin/libgcc_s_dw2-1"; DestDir: "{app}"
+;Source: "c:/msys64/mingw32/bin/libstdc++-6.dll"; DestDir: "{app}"
+;Source: "c:/msys64/mingw32/bin/libwinpthread-1.dll"; DestDir: "{app}"
 ; Base files needed from mingw64
-Source: "c:/msys64/mingw64/bin/libgcc_s_seh-1.dll"; DestDir: "{app}"
-Source: "c:/msys64/mingw64/bin/libstdc++-6.dll"; DestDir: "{app}"
-Source: "c:/msys64/mingw64/bin/libwinpthread-1.dll"; DestDir: "{app}"
+;Source: "c:/msys64/mingw64/bin/libgcc_s_seh-1.dll"; DestDir: "{app}"
+;Source: "c:/msys64/mingw64/bin/libstdc++-6.dll"; DestDir: "{app}"
+;Source: "c:/msys64/mingw64/bin/libwinpthread-1.dll"; DestDir: "{app}"
 
 [Code]
 const EnvironmentKey = 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
